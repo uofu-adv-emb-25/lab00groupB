@@ -1,3 +1,6 @@
+bootrom: Memory.MappedMemory @ sysbus 0x00000000
+    size: 0x4000
+
 flash0: Memory.MappedMemory @ sysbus 0x10000000
     size: 0x200000
 
@@ -44,3 +47,15 @@ sysbus:
         Machine PyDevFromFile @scripts/pydev/rolling-bit.py 0x40008038 4 True "CLK_REF_SELECTED"
         Machine PyDevFromFile @scripts/pydev/rolling-bit.py 0x40008044 4 True "CLK_SYS_SELECTED"
         Tag <0x40008048 4> "CLK_PERI_CTRL" 0x880
+
+// Custom raspberry pico required to work.
+
+spinlocks: Python.PythonPeripheral @ sysbus 0xD0000100
+    size: 128
+    initable: true
+    filename: "scripts/pydev/rp2040_spinlock.py"
+
+divider: Python.PythonPeripheral @ sysbus 0xD0000060
+    size: 32
+    initable: true
+    filename: "scripts/pydev/rp2040_divider.py"
